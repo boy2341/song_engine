@@ -1,0 +1,8 @@
+﻿streamlit
+numpy
+pandas
+requests
+torch
+sentence-transformers
+librosa
+soundfile
