@@ -1,7 +1,15 @@
-import time
+﻿import time
 import numpy as np
 
-from step1 import get_connection
+import sqlite3
+from config import DB_PATH
+
+
+def get_connection(db_path: str = DB_PATH) -> sqlite3.Connection:
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON;")
+    return conn
 
 
 class MusicRecommender:
@@ -289,6 +297,6 @@ class MusicRecommender:
 if __name__ == "__main__":
     engine = MusicRecommender()
     out = engine.recommend(seed_idx=0)
-    print(f"Seed: {out['seed']['title']} — {out['seed']['artist']} ({out['latency_ms']} ms)")
+    print(f"Seed: {out['seed']['title']} â€” {out['seed']['artist']} ({out['latency_ms']} ms)")
     for r in out["results"]:
-        print(f"  {r['score']:.3f} | {r['title']} — {r['artist']} ({', '.join(r['reasons'])})")
+        print(f"  {r['score']:.3f} | {r['title']} â€” {r['artist']} ({', '.join(r['reasons'])})")
