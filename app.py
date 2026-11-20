@@ -9,7 +9,7 @@ import urllib.parse
 import numpy as np
 import requests
 import streamlit as st
-
+import base64 
 from config import DB_PATH, VIBE_ANCHORS
 from step3 import MusicRecommender
 
@@ -23,7 +23,59 @@ SPOTIFY_SVG = """
 """
 
 st.set_page_config(page_title="Song Finder", page_icon="🎧", layout="wide")
+def set_app_background(image_path: str = "back.jpg", image_url: str = "") -> None:
+    """Apply a local image, online image URL, or fallback dark gradient with frosted-glass cards."""
+    bg_layer = (
+        "radial-gradient(circle at 15% 20%, rgba(29, 185, 84, 0.22), transparent 45%), "
+        "radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.25), transparent 50%), "
+        "linear-gradient(135deg, #0b0f17 0%, #131a29 50%, #0d1117 100%)"
+    )
 
+    if os.path.exists(image_path):
+        ext = os.path.splitext(image_path)[1].lstrip(".").lower() or "jpeg"
+        if ext == "jpg":
+            ext = "jpeg"
+        with open(image_path, "rb") as img_file:
+            b64_data = base64.b64encode(img_file.read()).decode("utf-8")
+        bg_layer = (
+            f"linear-gradient(rgba(10, 12, 18, 0.72), rgba(10, 12, 18, 0.84)), "
+            f"url('data:image/{ext};base64,{b64_data}')"
+        )
+    elif image_url.strip():
+        bg_layer = (
+            f"linear-gradient(rgba(10, 12, 18, 0.72), rgba(10, 12, 18, 0.84)), "
+            f"url('{image_url.strip()}')"
+        )
+
+    st.markdown(
+        f"""
+        <style>
+        [data-testid="stAppViewContainer"] {{
+            background-image: {bg_layer};
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f3f4f6;
+        }}
+        [data-testid="stHeader"] {{
+            background: rgba(0, 0, 0, 0);
+        }}
+        [data-testid="stSidebar"] > div:first-child {{
+            background-color: rgba(14, 17, 24, 0.82);
+            backdrop-filter: blur(10px);
+        }}
+        [data-testid="stVerticalBlockBorderWrapper"] {{
+            background-color: rgba(20, 25, 36, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+set_app_background()
 st.markdown(
     """
     <style>
