@@ -1,18 +1,13 @@
-# Secrets & environment
-.env
+﻿.env
 myenv/
 venv/
 __pycache__/
 *.pyc
-
-# Raw datasets & archives (too large for GitHub)
 songs.csv
 archive.zip
 archive/
-
-# Local IDE / agent folders
+music_engine_full_backup.db
 .vscode/
 .claude/
 .agents/
 .DS_Store
-music_engine_full_backup.db
